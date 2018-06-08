@@ -1,0 +1,47 @@
+server:
+  port: 20181
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  datasource:
+      platform: mysql
+      url: jdbc:mysql://broker:3306/uaa
+      username: root
+      password: fengshuaiju
+      initialization-mode: never
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: true
+      WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS: false
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: smartcargo.uaa
+security:
+  oauth2:
+    resource:
+      jwt:
+        key-value: staging
+
+qcloud.sms:
+  appId: 1400090446
+  appKey: 4e74febbc3af5c8de6f58413a2f6d8fd
+  sign: 运抵达
+
+---
+spring:
+  profiles: development
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+
+---
+
+spring.profiles: staging
+
+logging:
+  file: ${user.home}/logs/accounts.log
