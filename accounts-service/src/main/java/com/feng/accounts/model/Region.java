@@ -14,7 +14,6 @@ import javax.persistence.Embeddable;
 @Embeddable
 @Value
 @Accessors(fluent = true)
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class Region {
 
     private String city;

@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS oauth_approvals (
   lastModifiedAt TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS ClientDetails (
+CREATE TABLE IF NOT EXISTS client_details (
   appId                  VARCHAR(150) PRIMARY KEY,
   resourceIds            VARCHAR(150),
   appSecret              VARCHAR(150),
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS login (
 CREATE TABLE IF NOT EXISTS tenant (
   id                      BIGINT(11) AUTO_INCREMENT PRIMARY KEY,
   created_at              TIMESTAMP DEFAULT current_timestamp NOT NULL,
-  tenant_id               binary(255)                                  NOT NULL UNIQUE,
+  tenant_id               VARCHAR(64)                                  NOT NULL UNIQUE,
   owner_id                VARCHAR(150)                                  NOT NULL,
   supporter_id            VARCHAR(150),
   chinese_name            VARCHAR(150)                                  NOT NULL UNIQUE,
@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS membership (
   created_at    TIMESTAMP DEFAULT current_timestamp NOT NULL,
 
   username      VARCHAR(150)                                  NOT NULL,
-  tenant_id     binary(255)                                  NOT NULL,
+  tenant_id     VARCHAR(64)                                  NOT NULL,
   name          VARCHAR(150),
   cellphone     VARCHAR(150),
   email_address VARCHAR(150),
@@ -141,16 +141,16 @@ CREATE TABLE IF NOT EXISTS membership (
 
 CREATE TABLE IF NOT EXISTS membership_role_group_ids (
   membership_id BIGINT(11) NOT NULL,
-  role_group_id binary(255)    NOT NULL,
+  role_group_id VARCHAR(64)    NOT NULL,
 
   PRIMARY KEY (membership_id, role_group_id),
   CONSTRAINT FK_membership_role_group_ids_membership_id FOREIGN KEY (membership_id) REFERENCES membership (id)
 );
 
 CREATE TABLE IF NOT EXISTS role_group (
-  id        binary(255) NOT NULL PRIMARY KEY,
+  id        VARCHAR(64) NOT NULL PRIMARY KEY,
   version   BIGINT(11),
-  tenant_id binary(255)   NOT NULL,
+  tenant_id VARCHAR(64)   NOT NULL,
   name      VARCHAR(150) NOT NULL,
 
   UNIQUE (tenant_id, name),
@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS role_group (
 );
 
 CREATE TABLE IF NOT EXISTS role_group_roles (
-  role_group_id binary(255)  NOT NULL,
+  role_group_id VARCHAR(64)  NOT NULL,
   role          VARCHAR(150) NOT NULL,
 
   PRIMARY KEY (role_group_id, role),

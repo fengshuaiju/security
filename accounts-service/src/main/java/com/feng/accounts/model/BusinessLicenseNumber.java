@@ -11,7 +11,6 @@ import javax.persistence.Embeddable;
 @Embeddable
 @Value
 @Accessors(fluent = true)
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class BusinessLicenseNumber {
 
     private String businessLicenseNumber;

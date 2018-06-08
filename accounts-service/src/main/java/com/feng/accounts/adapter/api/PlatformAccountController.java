@@ -51,7 +51,7 @@ public class PlatformAccountController {
     public void approveTenant(@AuthenticationPrincipal(expression = "username") String username,
                               @PathVariable String tenantId,
                               @RequestBody ApproveTenantCommand command) {
-        accountApplicationService.approveTenant(new Username(username), new TenantId(UUID.fromString(tenantId)),
+        accountApplicationService.approveTenant(new Username(username), new TenantId(tenantId),
                 command.isApproved(), Tenant.Type.PREMIER_CUSTOMER, command.getCode(), command.getRemarks());
     }
 

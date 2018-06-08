@@ -12,17 +12,12 @@ import java.util.UUID;
 @Embeddable
 @Value
 @Accessors(fluent = true)
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public final class TenantId {
 
-    private UUID tenantId;
+    private String tenantId;
 
-    public TenantId(UUID tenantId) {
-        this.tenantId = Validate.notNull(tenantId);
-    }
-
-    public TenantId(String id) {
-        this.tenantId = UUID.fromString(Validate.notBlank(id));
+    public TenantId(String tenantId) {
+        this.tenantId = Validate.notBlank(tenantId);
     }
 
     @Override

@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 @Embeddable
 @Value
 @Accessors(fluent = true)
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class EmailAddress {
 
     private static final long serialVersionUID = 6791553173939541163L;

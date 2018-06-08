@@ -21,7 +21,7 @@ public class JpaTenantRepository implements TenantRepository {
 
     @Override
     public TenantId nextId() {
-        return new TenantId(UUID.randomUUID());
+        return new TenantId(UUID.randomUUID().toString());
     }
 
     @Override

@@ -15,14 +15,14 @@ import java.util.UUID;
 public class RoleGroupId implements Serializable {
 
     @Column(name = "role_group_id")
-    private UUID id;
+    private String id;
 
     private RoleGroupId() {
-        this.id = new UUID(0L, 0L);
+        this.id = new UUID(0L, 0L).toString();
     }
 
     public RoleGroupId(UUID id) {
-        this.id = Validate.notNull(id);
+        this.id = Validate.notNull(id.toString());
     }
 
 }
