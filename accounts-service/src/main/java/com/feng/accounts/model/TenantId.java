@@ -1,13 +1,10 @@
 package com.feng.accounts.model;
 
 import com.feng.accounts.support.utils.Validate;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
 import javax.persistence.Embeddable;
-import java.util.UUID;
 
 @Embeddable
 @Value

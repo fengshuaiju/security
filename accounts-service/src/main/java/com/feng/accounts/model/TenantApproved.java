@@ -8,7 +8,7 @@ import lombok.Value;
 @Value
 @EqualsAndHashCode(callSuper = false)
 @Builder
-class TenantApproved extends DomainEvent {
+public class TenantApproved extends DomainEvent {
     private String id;
     private String code;
     private Tenant.Type type;

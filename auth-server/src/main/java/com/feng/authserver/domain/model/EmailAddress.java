@@ -1,13 +1,11 @@
-package com.feng.accounts.model;
+package com.feng.authserver.domain.model;
 
-import com.feng.accounts.support.utils.Validate;
+import com.feng.authserver.support.utils.Validate;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Embeddable;
 import java.util.regex.Pattern;
 
-@Embeddable
 @Value
 @Accessors(fluent = true)
 public class EmailAddress {
@@ -22,11 +20,6 @@ public class EmailAddress {
 
     public static boolean isValid(String email) {
         return Pattern.matches("\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*", email);
-    }
-
-    @Override
-    public String toString() {
-        return emailAddress;
     }
 
 }

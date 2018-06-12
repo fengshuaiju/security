@@ -1,7 +1,5 @@
 package com.feng.accounts.model;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 

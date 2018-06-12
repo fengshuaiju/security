@@ -1,0 +1,36 @@
+server:
+  port: 20180
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  jooq:
+    sql-dialect: MYSQL
+  datasource:
+      platform: mysql
+      url: jdbc:mysql://broker:3306/uaa?useUnicode=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true
+      username: root
+      password: fengshuaiju
+      driver-class-name: com.mysql.jdbc.Driver
+
+---
+spring:
+  profiles: development
+
+#flyway:
+#  initSqls: "CREATE SCHEMA IF NOT EXISTS jjcargo;"
+#  schemas:
+#    - jjcargo
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+
+---
+
+spring.profiles: staging
+
+logging:
+  file: ${user.home}/logs/auth.log

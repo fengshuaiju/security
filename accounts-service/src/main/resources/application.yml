@@ -4,9 +4,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+  jooq:
+    sql-dialect: MYSQL
   datasource:
       platform: mysql
-      url: jdbc:mysql://broker:3306/uaa
+      url: jdbc:mysql://broker:3306/uaa?useUnicode=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true
       username: root
       password: fengshuaiju
       initialization-mode: never
@@ -18,7 +20,15 @@ spring:
     stream:
       bindings:
         output:
-          destination: smartcargo.uaa
+          destination: feng.uaa.notifications
+        from-self:
+          group: feng.uaa
+          destination: feng.uaa.notifications
+
+  rabbitmq:
+    host: broker
+    port: 5672
+
 security:
   oauth2:
     resource:

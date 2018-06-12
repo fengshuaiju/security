@@ -13,6 +13,6 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
         http.authorizeRequests()
                 .antMatchers("/apidocs/**").permitAll()
                 .antMatchers("/v1/rpc/**").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
     }
 }

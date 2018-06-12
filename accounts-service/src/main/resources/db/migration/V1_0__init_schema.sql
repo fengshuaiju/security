@@ -49,8 +49,8 @@ CREATE TABLE IF NOT EXISTS oauth_approvals (
   clientId       VARCHAR(150),
   scope          VARCHAR(150),
   status         VARCHAR(150),
-  expiresAt      TIMESTAMP,
-  lastModifiedAt TIMESTAMP
+  expiresAt      TIMESTAMP DEFAULT current_timestamp NOT NULL,
+  lastModifiedAt TIMESTAMP DEFAULT current_timestamp NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS client_details (
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS tenant (
   status                  VARCHAR(150)                                  NOT NULL,
   type                    VARCHAR(150),
   code                    VARCHAR(8),
-  reviewed_at             TIMESTAMP,
+  reviewed_at             TIMESTAMP DEFAULT current_timestamp NOT NULL,
   review_remarks          VARCHAR(150),
 
   CONSTRAINT FK_tenant_owner_id FOREIGN KEY (owner_id) REFERENCES users (username),
