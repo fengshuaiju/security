@@ -23,13 +23,9 @@
 
 SELECT version();
 
-INSERT IGNORE INTO users (id, created_at, username, name, nickname, sex, city, province, country, head_image_url ) VALUES ('1000', CURRENT_TIMESTAMP , 'admin', '平台管理员', NULL, NULL, NULL, NULL, NULL, NULL );
-
-INSERT IGNORE INTO tenant (id, created_at, tenant_id, owner_id, supporter_id, chinese_name, english_name, office_address, office_phone, fax_number, postcode, business_license_number, business_license_uri, organization_code_uri, tax_number_uri, STATUS, type, CODE, reviewed_at, review_remarks ) VALUES ('1000', CURRENT_TIMESTAMP , '16e04254-5bd1-4c24-9220-74d408680c10', 'admin', 'admin', '平台', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'APPROVED', 'PLATFORM', 'PLATFORM', CURRENT_TIMESTAMP , 'Platform Init');
+INSERT IGNORE INTO users (id, created_at, username, name, nickname, sex, city, province, country, head_image_url, roles ) VALUES ('1000', CURRENT_TIMESTAMP , 'admin', '平台管理员', NULL, NULL, NULL, NULL, NULL, NULL, 'TENANT_ADMIN');
 
 INSERT IGNORE INTO login (id, created_at, username, password, cellphone, email_address, wechat_open_id, user_id ) VALUES ('1000', CURRENT_TIMESTAMP , 'admin', '{bcrypt}$2a$10$nLQaW2BQz79.aO2jdqHVdO4tfBZZlDC2rg.vRXQnWktIDI4j3YtAu', NULL, NULL, NULL, '1000');
-
-INSERT IGNORE INTO membership (id, version, created_at, username, tenant_id, name, cellphone, email_address, remarks, enabled ) VALUES ('1000', '0', CURRENT_TIMESTAMP , 'admin', '16e04254-5bd1-4c24-9220-74d408680c10', '平台管理员', NULL, NULL, NULL, TRUE );
 
 --
 -- INSERT INTO users (

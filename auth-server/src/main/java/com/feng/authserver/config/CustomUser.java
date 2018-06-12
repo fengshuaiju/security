@@ -13,12 +13,8 @@ class CustomUser extends User {
     private String tenantType;
     private String tenantStatus;
 
-    CustomUser(String username, String password, Collection<? extends GrantedAuthority> authorities,
-               String tenantId, String tenantType, String tenantStatus) {
+    CustomUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
-        this.tenantId = tenantId;
-        this.tenantType = tenantType;
-        this.tenantStatus = tenantStatus;
     }
 
 }

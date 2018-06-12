@@ -1,12 +1,14 @@
 package com.feng.accounts.model;
 
 import com.feng.accounts.support.persistence.IdentifiedDomainObject;
+import com.feng.accounts.support.utils.ItemsConverter;
 import com.feng.accounts.support.utils.Validate;
 import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
 /**
  * Created by fengshuaiju on 2018/1/10.
@@ -33,6 +35,9 @@ public class User extends IdentifiedDomainObject {
     private Region region;
 
     private String headImageUrl;
+
+    @Convert(converter = ItemsConverter.class)
+    private List<String> roles;
 
     @Column(updatable = false, insertable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Instant createdAt;

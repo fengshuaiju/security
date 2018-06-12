@@ -10,7 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sprout.jooq.generate.tables.records.EventPublishingTrackerRecord;
 
 import static sprout.jooq.generate.Tables.EVENT_PUBLISHING_TRACKER;
-import static sprout.jooq.generate.Tables.EVENT_TO_PUBLISH;
+import static sprout.jooq.generate.tables.EventToPublish.EVENT_TO_PUBLISH;
+
 
 @Configuration
 @EnableScheduling

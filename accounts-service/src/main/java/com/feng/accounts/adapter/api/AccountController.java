@@ -2,7 +2,6 @@ package com.feng.accounts.adapter.api;
 
 import com.feng.accounts.application.command.BindWechatCommand;
 import com.feng.accounts.application.service.AccountApplicationService;
-import com.feng.accounts.model.TenantId;
 import com.feng.accounts.model.Username;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,25 +45,6 @@ public class AccountController {
         return result;
     }
 
-    @PreAuthorize("#oauth2.hasAnyScope('frontend', 'tenant', 'platform')")
-    @PostMapping("/{username}/captcha")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void sendCaptcha(@PathVariable String username) {
-        accountApplicationService.sendCaptcha(username);
-    }
-
-    @PreAuthorize("#oauth2.hasScope('frontend')")
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Map<String, Object> registerUser(@RequestBody Registration registration) {
-        TenantId tenantId = accountApplicationService.createTenant(
-                registration.getUsername(),
-                registration.getPassword(),
-                registration.getTenantName(),
-                registration.getCaptcha());
-//        return ImmutableMap.of("tenantId", tenantId.toString());
-        return null;
-    }
 
     @PreAuthorize("#oauth2.hasAnyScope('tenant', 'platform')")
     @PostMapping("/bind-wechat")

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static sprout.jooq.generate.Tables.EVENT_TO_PUBLISH;
 
+
 @Component
 @Slf4j
 public class DomainEventListener {

@@ -9,16 +9,16 @@ import java.util.Collection;
 @Getter
 public class CustomUser extends User {
 
-    private String tenantId;
-    private String tenantType;
-    private String tenantStatus;
+//    private String tenantId;
+//    private String tenantType;
+//    private String tenantStatus;
 
     public CustomUser(String username, String password, Collection<? extends GrantedAuthority> authorities,
                       String tenantId, String tenantType, String tenantStatus) {
         super(username, password, authorities);
-        this.tenantId = tenantId;
-        this.tenantType = tenantType;
-        this.tenantStatus = tenantStatus;
+//        this.tenantId = tenantId;
+//        this.tenantType = tenantType;
+//        this.tenantStatus = tenantStatus;
     }
 
     public CustomUser getCustomUser() {
