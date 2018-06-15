@@ -25,7 +25,8 @@ spring:
         from-self:
           group: feng.uaa
           destination: feng.uaa.notifications
-
+  output.ansi.enabled: always
+  
   rabbitmq:
     host: broker
     port: 5672

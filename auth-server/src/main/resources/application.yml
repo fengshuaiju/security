@@ -14,6 +14,7 @@ spring:
       username: root
       password: fengshuaiju
       driver-class-name: com.mysql.jdbc.Driver
+  output.ansi.enabled: always
 
   rabbitmq:
     host: broker
