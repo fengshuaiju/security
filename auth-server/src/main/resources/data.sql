@@ -23,7 +23,7 @@
 
 SELECT version();
 
-INSERT IGNORE INTO users (id, created_at, username, name, nickname, sex, city, province, country, head_image_url, roles ) VALUES ('1000', CURRENT_TIMESTAMP , 'admin', '平台管理员', NULL, NULL, NULL, NULL, NULL, NULL, 'TENANT_ADMIN');
+INSERT IGNORE INTO users (id, created_at, username, nickname, sex, city, province, country, head_image_url, roles ) VALUES ('1000', CURRENT_TIMESTAMP , 'admin', '平台管理员', 'MALE', NULL, NULL, NULL, NULL, 'TENANT_ADMIN');
 
 INSERT IGNORE INTO login (id, created_at, username, password, cellphone, email_address, wechat_open_id, user_id ) VALUES ('1000', CURRENT_TIMESTAMP , 'admin', '{bcrypt}$2a$10$nLQaW2BQz79.aO2jdqHVdO4tfBZZlDC2rg.vRXQnWktIDI4j3YtAu', NULL, NULL, NULL, '1000');
 

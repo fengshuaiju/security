@@ -54,7 +54,7 @@ public class Login extends IdentifiedDomainObject {
         this.user = user;
     }
 
-    public Login(Username username, Cellphone cellphone, EmailAddress email, String password, User user) {
+    public Login(Username username, Cellphone cellphone, EmailAddress email, String password, User user, WechatOpenId wechatOpenId) {
         Validate.isTrue(!(username == null && cellphone == null && email == null),
                 "Username, cellphone and email cannot be null at the same time.");
         this.username = username;
@@ -62,6 +62,7 @@ public class Login extends IdentifiedDomainObject {
         this.emailAddress = email;
         this.password = password;
         this.user = Validate.notNull(user);
+        this.wechatOpenId = wechatOpenId;
     }
 
     public void bindWechat(WechatOpenId wechatOpenId) {
@@ -72,7 +73,7 @@ public class Login extends IdentifiedDomainObject {
         return this.user;
     }
 
-    public void editUserInfo(Nickname nickname, Integer sex,
+    public void editUserInfo(String nickname, Integer sex,
                              String headImageUrl, String country, String province, String city) {
 
         user.editInfo(nickname, sex, headImageUrl, country, province, city);

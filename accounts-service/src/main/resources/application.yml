@@ -1,5 +1,6 @@
 server:
   port: 20181
+  context-path: /api/accounts
 spring:
   jpa:
     hibernate:

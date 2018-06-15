@@ -72,7 +72,6 @@ CREATE TABLE IF NOT EXISTS users (
   created_at     TIMESTAMP DEFAULT current_timestamp NOT NULL,
 
   username       VARCHAR(150)                                  NOT NULL UNIQUE,
-  name           VARCHAR(150),
   nickname       VARCHAR(150),
   roles          VARCHAR(150),
   sex            VARCHAR(150),

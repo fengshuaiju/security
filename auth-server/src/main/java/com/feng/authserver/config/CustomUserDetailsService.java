@@ -73,7 +73,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 //查询用户信息
                 String userRole = jooq.select(USERS.ROLES)
                         .from(USERS)
-                        .where(USERS.NAME.eq(actualUsername))
+                        .where(USERS.USERNAME.eq(actualUsername))
                         .fetchOptional(USERS.ROLES)
                         .orElse(Role.VISITOR.name());
 

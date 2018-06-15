@@ -1,27 +1,21 @@
 package com.feng.accounts.application.service;
 
-import com.feng.accounts.application.command.BindWechatCommand;
+import com.feng.accounts.application.representation.UsersInfoRepresentation;
 import com.feng.accounts.model.*;
 import com.feng.accounts.support.utils.Validate;
 import com.feng.accounts.support.utils.ValidationException;
-import com.google.common.collect.Streams;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jooq.*;
+import org.jooq.DSLContext;
+import org.jooq.Record2;
+import org.jooq.Record7;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.Collections;
-
-import static java.util.stream.Collectors.toList;
 import static sprout.jooq.generate.tables.Login.LOGIN;
 import static sprout.jooq.generate.tables.Users.USERS;
 
@@ -37,10 +31,6 @@ public class AccountApplicationService {
     private DSLContext jooq;
 
     @Autowired
-    private SmsSender smsSender;
-
-
-    @Autowired
     public AccountApplicationService(DSLContext jooq) {
         this.jooq = jooq;
         this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -49,7 +39,7 @@ public class AccountApplicationService {
     @Transactional(readOnly = true)
     public String friendlyName(String username) {
 
-        Record3<String, String, String> record = jooq.select(LOGIN.USERNAME, USERS.NICKNAME, USERS.NAME)
+        Record2<String, String> record = jooq.select(LOGIN.USERNAME, USERS.NICKNAME)
                 .from(LOGIN)
                 .leftOuterJoin(USERS).on(LOGIN.USER_ID.eq(USERS.ID))
                 .where(LOGIN.USERNAME.eq(username)).fetchOne();
@@ -59,22 +49,17 @@ public class AccountApplicationService {
 
         String _username = record.value1();
         String nickname = record.value2();
-        String name = record.value3();
 
         if (StringUtils.isNotBlank(nickname)) {
             return nickname;
         } else {
-            if (StringUtils.isNotBlank(name)) {
-                return name;
-            } else {
                 return _username;
             }
-        }
 
     }
 
     @Transactional
-    public Login createUser(Username username, Cellphone cellphone, EmailAddress email, String password, String name) {
+    public Login createUser(Username username, Cellphone cellphone, EmailAddress email, String password, String nickName, WechatOpenId wechatOpenId) {
         if (username != null) {
             Validate.isTrue(jooq.selectFrom(LOGIN).where(LOGIN.USERNAME.eq(username.toString())).fetch().isEmpty(), "error.username.existed");
         }
@@ -85,17 +70,21 @@ public class AccountApplicationService {
             Validate.isTrue(jooq.selectFrom(LOGIN).where(LOGIN.EMAIL_ADDRESS.eq(email.toString())).fetch().isEmpty(), "error.email.existed");
         }
 
+        if (wechatOpenId != null) {
+            Validate.isTrue(jooq.selectFrom(LOGIN).where(LOGIN.WECHAT_OPEN_ID.eq(wechatOpenId.toString())).fetch().isEmpty(), "error.wechatOpenId.existed");
+        }
+
         if (username == null) {
             username = generateUniqueUsername();
         }
 
-        Login login = new Login(username, cellphone, email, passwordEncoder.encode(password), new User(username, name));
+        Login login = new Login(username, cellphone, email, passwordEncoder.encode(password), new User(username, nickName), wechatOpenId);
         loginRepository.add(login);
         return login;
     }
 
     @Transactional
-    public Login registerUser(String username, String password, String name) {
+    public Login registerUser(String username, String password, String nickName) {
         Validate.notBlank(username, "Username can not be blank");
 
         Login login;
@@ -104,18 +93,18 @@ public class AccountApplicationService {
             Validate.isTrue(jooq.selectFrom(LOGIN).where(LOGIN.CELLPHONE.eq(username)).fetch().isEmpty(), "error.cellphone.existed");
 
             uniqueUsername = generateUniqueUsername();
-            login = new Login(uniqueUsername, new Cellphone(username), passwordEncoder.encode(password), new User(uniqueUsername, name));
+            login = new Login(uniqueUsername, new Cellphone(username), passwordEncoder.encode(password), new User(uniqueUsername, nickName));
         } else if (EmailAddress.isValid(username)) {
             Validate.isTrue(jooq.selectFrom(LOGIN).where(LOGIN.EMAIL_ADDRESS.eq(username)).fetch().isEmpty(), "error.email.existed");
 
             uniqueUsername = generateUniqueUsername();
-            login = new Login(uniqueUsername, new EmailAddress(username), passwordEncoder.encode(password), new User(uniqueUsername, name));
+            login = new Login(uniqueUsername, new EmailAddress(username), passwordEncoder.encode(password), new User(uniqueUsername, nickName));
         } else {
             String regex = "^[a-zA-Z][a-zA-Z0-9_-]*$";
             if (username.matches(regex)) {
                 Validate.isTrue(jooq.selectFrom(LOGIN).where(LOGIN.USERNAME.eq(username)).fetch().isEmpty(), "error.username.existed");
                 uniqueUsername = new Username(username);
-                login = new Login(uniqueUsername, passwordEncoder.encode(password), new User(uniqueUsername, name));
+                login = new Login(uniqueUsername, passwordEncoder.encode(password), new User(uniqueUsername, nickName));
             } else {
                 throw new ValidationException("error.register.username.invalid");
             }
@@ -135,42 +124,6 @@ public class AccountApplicationService {
         }
     }
 
-    @Transactional
-    public void bindWechat(BindWechatCommand bindWechatCommand, Username username) {
-        loginRepository.findByUserName(username)
-                .ifPresent(login -> {
-                    login.bindWechat(bindWechatCommand.getWechatOpenId());
-
-                    login.editUserInfo(bindWechatCommand.getNickname(), bindWechatCommand.getSex(),
-                            bindWechatCommand.getHeadImageUrl(), bindWechatCommand.getCountry(), bindWechatCommand.getProvince(),
-                            bindWechatCommand.getCity());
-
-                    log.info("User {} binding Wechat success", username);
-                });
-    }
-
-
-
-    private Collection<SortField<?>> getSortFields(Table<? extends Record> table, Sort sortSpec) {
-        if (sortSpec == null) {
-            return Collections.emptyList();
-        }
-
-        return Streams.stream(sortSpec.iterator())
-                .map(field -> {
-                    try {
-
-                        Field _field = table.getClass().getField(field.getProperty().toUpperCase());
-                        TableField tableField = (TableField) _field.get(table);
-                        return (SortField<?>) (field.getDirection() == Sort.Direction.ASC ? tableField.asc() : tableField.desc());
-                    } catch (NoSuchFieldException | IllegalAccessException e) {
-                        throw new InvalidDataAccessApiUsageException("Could not find table field: " + field.getProperty(), e);
-                    }
-                })
-                .collect(toList());
-    }
-
-
 
     @Transactional
     public void updatePassword(Username username, String password) {
@@ -178,4 +131,26 @@ public class AccountApplicationService {
                 .ifPresent(login -> login.setPassword(passwordEncoder.encode(password)));
     }
 
+    @Transactional(readOnly = true)
+    public UsersInfoRepresentation userInfo(String username) {
+
+        Record7<String, String, String, String, String, String, String> info = jooq.select(
+                LOGIN.USERNAME, USERS.NICKNAME, USERS.SEX, USERS.CITY, USERS.PROVINCE,
+                USERS.COUNTRY, USERS.HEAD_IMAGE_URL)
+                .from(LOGIN)
+                .leftOuterJoin(USERS).on(LOGIN.USER_ID.eq(USERS.ID))
+                .where(LOGIN.USERNAME.eq(username)).fetchOne();
+
+        UsersInfoRepresentation build = UsersInfoRepresentation.builder()
+                .username(info.value1())
+                .nickname(info.value2())
+                .sex(Sex.valueOf(info.value3()))
+                .city(info.value4())
+                .province(info.value5())
+                .country(info.value6())
+                .headImageUrl(info.value7())
+                .build();
+
+        return build;
+    }
 }

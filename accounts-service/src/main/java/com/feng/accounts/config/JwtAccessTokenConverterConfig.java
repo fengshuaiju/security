@@ -15,9 +15,9 @@ import java.util.Map;
 @Configuration
 public class JwtAccessTokenConverterConfig implements JwtAccessTokenConverterConfigurer {
 
-    private static final String TENANT_ID = "tenantId";
-    private static final String TENANT_TYPE = "tenantType";
-    private static final String TENANT_STATUS = "tenantStatus";
+//    private static final String TENANT_ID = "tenantId";
+//    private static final String TENANT_TYPE = "tenantType";
+//    private static final String TENANT_STATUS = "tenantStatus";
 
     @Override
     public void configure(JwtAccessTokenConverter converter) {
@@ -35,14 +35,15 @@ public class JwtAccessTokenConverterConfig implements JwtAccessTokenConverterCon
                 return null;
             }
 
+            //从令牌中取出用户信息，转换为jwtToken
             private CustomUser getPrincipal(String username, Collection<? extends GrantedAuthority> authorities, Map<String, ?> map) {
-                if (map.containsKey(TENANT_ID) && map.containsKey(TENANT_TYPE) && map.containsKey(TENANT_STATUS)) {
-                    String tenantId = (String) map.get(TENANT_ID);
-                    String tenantType = (String) map.get(TENANT_TYPE);
-                    String tenantStatus = (String) map.get(TENANT_STATUS);
-                    return new CustomUser(username, "N/A", authorities, tenantId, tenantType, tenantStatus);
-                }
-                return null;
+//                if (map.containsKey(TENANT_ID) && map.containsKey(TENANT_TYPE) && map.containsKey(TENANT_STATUS)) {
+//                    String tenantId = (String) map.get(TENANT_ID);
+//                    String tenantType = (String) map.get(TENANT_TYPE);
+//                    String tenantStatus = (String) map.get(TENANT_STATUS);
+//                    return new CustomUser(username, "N/A", authorities, tenantId, tenantType, tenantStatus);
+//                }
+                return new CustomUser(username, "N/A", authorities);
             }
         });
         converter.setAccessTokenConverter(accessTokenConverter);

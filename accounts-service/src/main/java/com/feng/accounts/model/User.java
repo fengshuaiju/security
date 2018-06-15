@@ -25,9 +25,7 @@ public class User extends IdentifiedDomainObject {
 
     private Username username;
 
-    private Nickname nickname;
-
-    private String name;
+    private String nickname;
 
     @Enumerated(EnumType.STRING)
     private Sex sex;
@@ -46,12 +44,12 @@ public class User extends IdentifiedDomainObject {
         this(username, null);
     }
 
-    public User(Username username, String name) {
+    public User(Username username, String nickname) {
         this.username = Validate.notNull(username);
-        this.name = name;
+        this.nickname = nickname;
     }
 
-    public void editInfo(Nickname nickname, Integer sex,
+    public void editInfo(String nickname, Integer sex,
                          String headImageUrl, String country, String province, String city) {
         if(this.nickname == null){
             this.nickname = nickname;
