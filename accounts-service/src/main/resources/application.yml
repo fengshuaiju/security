@@ -31,6 +31,17 @@ spring:
     host: broker
     port: 5672
 
+
+eureka:
+  instance:
+    metadataMap:
+      instanceId:
+        ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    fetchRegistry: true
+    healthcheck:
+      enabled: true
+
 security:
   oauth2:
     resource:
