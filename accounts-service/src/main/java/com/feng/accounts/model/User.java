@@ -8,7 +8,8 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.List;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * Created by fengshuaiju on 2018/1/10.
@@ -35,7 +36,7 @@ public class User extends IdentifiedDomainObject {
     private String headImageUrl;
 
     @Convert(converter = ItemsConverter.class)
-    private List<String> roles;
+    private Set<String> roles = Collections.EMPTY_SET;
 
     @Column(updatable = false, insertable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Instant createdAt;

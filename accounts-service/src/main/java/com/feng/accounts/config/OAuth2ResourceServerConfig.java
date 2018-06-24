@@ -11,8 +11,9 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/apidocs/**").permitAll()
+                .antMatchers("/open/**").permitAll()
                 .antMatchers("/v1/rpc/**").permitAll()
+                .antMatchers("/apidocs/**").permitAll()
                 .anyRequest().authenticated();
     }
 }

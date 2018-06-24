@@ -53,6 +53,10 @@ qcloud.sms:
   appKey: 4e74febbc3af5c8de6f58413a2f6d8fd
   sign: 运抵达
 
+wechat:
+  appId: wx1fe3c29affa59694
+  appSecret: e6dc7ab176842b4902d9d68adf193d16
+
 ---
 spring:
   profiles: development

@@ -99,6 +99,12 @@ public class AccountApplicationService {
 
             uniqueUsername = generateUniqueUsername();
             login = new Login(uniqueUsername, new EmailAddress(username), passwordEncoder.encode(password), new User(uniqueUsername, nickName));
+        } else if (WechatOpenId.isValid(username)) {
+            Validate.isTrue(jooq.selectFrom(LOGIN).where(LOGIN.WECHAT_OPEN_ID.eq(username)).fetch().isEmpty(), "error.wechatOpenId.existed");
+            password = "N/A";
+            uniqueUsername = new Username(username);
+            login = new Login(uniqueUsername, passwordEncoder.encode(password), new User(uniqueUsername, nickName));
+            login.bindWechat(new WechatOpenId(username));
         } else {
             String regex = "^[a-zA-Z][a-zA-Z0-9_-]*$";
             if (username.matches(regex)) {

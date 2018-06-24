@@ -1,10 +1,7 @@
 package com.feng.accounts.authconfig;
 
 import com.feng.accounts.config.CustomUser;
-import com.feng.accounts.model.Cellphone;
-import com.feng.accounts.model.EmailAddress;
-import com.feng.accounts.model.OpenId;
-import com.feng.accounts.model.Role;
+import com.feng.accounts.model.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 import static sprout.jooq.generate.tables.Login.LOGIN;
@@ -53,7 +51,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             usernameCondition = LOGIN.CELLPHONE.eq(username);
         } else if (EmailAddress.isValid(username)) {
             usernameCondition = LOGIN.EMAIL_ADDRESS.eq(username);
-        } else if (OpenId.isValid(username)) {
+        } else if (WechatOpenId.isValid(username)) {
             usernameCondition = LOGIN.WECHAT_OPEN_ID.eq(username);
             fromWeChat = true;
         } else if (username.matches("^[a-zA-Z][a-zA-Z0-9_-]*$")) {
