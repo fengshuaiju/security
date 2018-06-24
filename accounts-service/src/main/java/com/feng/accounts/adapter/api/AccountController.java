@@ -2,6 +2,7 @@ package com.feng.accounts.adapter.api;
 
 import com.feng.accounts.application.representation.UsersInfoRepresentation;
 import com.feng.accounts.application.service.AccountApplicationService;
+import com.google.common.collect.ImmutableMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -33,7 +36,10 @@ public class AccountController {
         return accountApplicationService.userInfo(username);
     }
 
-
+    @GetMapping("/check-token")
+    public Map<String,Object> checkToken(){
+        return ImmutableMap.of("code", 0, "msg", "ok");
+    }
 
 //    Example
 //    @PreAuthorize("#oauth2.hasAnyScope('tenant', 'platform') and isAuthenticated()")

@@ -80,9 +80,11 @@ public class OpenController {
         );
     }
 
+
+
     @GetMapping("/info")
     public Object info(@RequestParam String code){
-        return ImmutableMap.of("info","ok");
+        return ImmutableMap.of("code", 0, "msg", "ok");
     }
 
 }
