@@ -52,15 +52,15 @@ public class User extends IdentifiedDomainObject {
 
     public void editInfo(String nickname, Integer sex,
                          String headImageUrl, String country, String province, String city) {
-        if(this.nickname == null){
+        if(nickname != null){
             this.nickname = nickname;
         }
 
-        if(this.sex == null){
+        if(sex != null){
             this.sex = sex == 1 ? Sex.MALE : Sex.FEMALE;
         }
 
-        if(this.headImageUrl != null){
+        if(headImageUrl != null){
             this.headImageUrl = headImageUrl;
         }
 

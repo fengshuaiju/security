@@ -169,13 +169,12 @@ public class AccountApplicationService {
 
     @Transactional
     public void updateUserInfo(String username, ObtainUserInfoCommand userInfo) {
-        //TODO
+        //TODO 将用户信息放入map中定时更新
         //obtainUserInfo.put(username, userInfo);
         loginRepository.findByUserName(new Username(username))
                 .ifPresent(login -> {
-                    login.user().editInfo(userInfo.nickName(),userInfo.gender(), userInfo.avatarUrl(),
-                    userInfo.country(), userInfo.province(), userInfo.city());
-
+                    login.user().editInfo(userInfo.getNickName(),userInfo.getGender(), userInfo.getAvatarUrl(),
+                    userInfo.getCountry(), userInfo.getProvince(), userInfo.getCity());
 //                    DomainEventPublisher.publish();
                 });
     }
