@@ -1,17 +1,16 @@
 package com.feng.accounts.adapter.api;
 
+import com.alibaba.fastjson.JSONObject;
 import com.feng.accounts.application.representation.UsersInfoRepresentation;
 import com.feng.accounts.application.service.AccountApplicationService;
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -34,6 +33,13 @@ public class AccountController {
     public UsersInfoRepresentation userInfo(@AuthenticationPrincipal(expression = "username") String username){
         log.debug("get userInfo by username : {}", username);
         return accountApplicationService.userInfo(username);
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void obtainUserInfo(@RequestBody JSONObject userInfo){
+        log.info("userInfo------------>");
+        log.info(userInfo.toJSONString());
     }
 
     @GetMapping("/check-token")
