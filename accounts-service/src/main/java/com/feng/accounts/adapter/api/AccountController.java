@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.feng.accounts.application.command.ObtainUserInfoCommand;
 import com.feng.accounts.application.representation.UsersInfoRepresentation;
 import com.feng.accounts.application.service.AccountApplicationService;
+import com.feng.accounts.config.CurrentUser;
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,11 +38,10 @@ public class AccountController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-
-    public void obtainUserInfo(@AuthenticationPrincipal(expression = "username") String username,
-                               @RequestBody ObtainUserInfoCommand userInfo){
-        log.debug("obtain user: {}, info command : {}", username, JSONObject.toJSONString(userInfo));
-        accountApplicationService.updateUserInfo(username, userInfo);
+    public void obtainUserInfo(@RequestBody ObtainUserInfoCommand userInfo){
+        String userName = CurrentUser.getUserName();
+        log.debug("obtain user: {}, info command : {}", userName, JSONObject.toJSONString(userInfo));
+        accountApplicationService.updateUserInfo(userName, userInfo);
     }
 
     @GetMapping("/check-token")

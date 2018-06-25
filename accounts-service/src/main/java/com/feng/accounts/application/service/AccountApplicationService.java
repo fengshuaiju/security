@@ -3,6 +3,7 @@ package com.feng.accounts.application.service;
 import com.feng.accounts.application.command.ObtainUserInfoCommand;
 import com.feng.accounts.application.representation.UsersInfoRepresentation;
 import com.feng.accounts.model.*;
+import com.feng.accounts.support.domain.DomainEventPublisher;
 import com.feng.accounts.support.utils.Validate;
 import com.feng.accounts.support.utils.ValidationException;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -169,11 +169,14 @@ public class AccountApplicationService {
 
     @Transactional
     public void updateUserInfo(String username, ObtainUserInfoCommand userInfo) {
+        //TODO
         //obtainUserInfo.put(username, userInfo);
         loginRepository.findByUserName(new Username(username))
                 .ifPresent(login -> {
                     login.user().editInfo(userInfo.nickName(),userInfo.gender(), userInfo.avatarUrl(),
                     userInfo.country(), userInfo.province(), userInfo.city());
+
+//                    DomainEventPublisher.publish();
                 });
     }
 }
