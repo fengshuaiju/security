@@ -1,6 +1,7 @@
 package com.feng.accounts.adapter.api;
 
 import com.alibaba.fastjson.JSONObject;
+import com.feng.accounts.application.command.ObtainUserInfoCommand;
 import com.feng.accounts.application.representation.UsersInfoRepresentation;
 import com.feng.accounts.application.service.AccountApplicationService;
 import com.google.common.collect.ImmutableMap;
@@ -37,9 +38,11 @@ public class AccountController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void obtainUserInfo(@RequestBody JSONObject userInfo){
-        log.info("userInfo------------>");
-        log.info(userInfo.toJSONString());
+
+    public void obtainUserInfo(@AuthenticationPrincipal(expression = "username") String username,
+                               @RequestBody ObtainUserInfoCommand userInfo){
+        log.debug("obtain user: {}, info command : {}", username, JSONObject.toJSONString(userInfo));
+        accountApplicationService.updateUserInfo(username, userInfo);
     }
 
     @GetMapping("/check-token")

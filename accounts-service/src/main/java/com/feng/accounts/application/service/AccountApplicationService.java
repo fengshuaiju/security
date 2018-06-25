@@ -1,5 +1,6 @@
 package com.feng.accounts.application.service;
 
+import com.feng.accounts.application.command.ObtainUserInfoCommand;
 import com.feng.accounts.application.representation.UsersInfoRepresentation;
 import com.feng.accounts.model.*;
 import com.feng.accounts.support.utils.Validate;
@@ -16,6 +17,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import static sprout.jooq.generate.tables.Login.LOGIN;
 import static sprout.jooq.generate.tables.Users.USERS;
 
@@ -29,6 +34,8 @@ public class AccountApplicationService {
     private PasswordEncoder passwordEncoder;
 
     private DSLContext jooq;
+
+    private static Map<String, ObtainUserInfoCommand> obtainUserInfo = new ConcurrentHashMap<>();
 
     @Autowired
     public AccountApplicationService(DSLContext jooq) {
@@ -158,5 +165,15 @@ public class AccountApplicationService {
                 .build();
 
         return build;
+    }
+
+    @Transactional
+    public void updateUserInfo(String username, ObtainUserInfoCommand userInfo) {
+        //obtainUserInfo.put(username, userInfo);
+        loginRepository.findByUserName(new Username(username))
+                .ifPresent(login -> {
+                    login.user().editInfo(userInfo.nickName(),userInfo.gender(), userInfo.avatarUrl(),
+                    userInfo.country(), userInfo.province(), userInfo.city());
+                });
     }
 }
