@@ -12,7 +12,7 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 public class ListenerForNotificationsFromSelf {
 
     @StreamListener(InputChannels.INPUT_FROM_SELF)
-    public void handleNotificationsFromSelf(Notification notification) throws ClassNotFoundException {
+    public void handleNotificationsFromSelf(Notification notification) {
 
         log.error("Notification from self received: {}", notification.toString());
 
@@ -20,7 +20,7 @@ public class ListenerForNotificationsFromSelf {
             EventReader eventReader = new EventReader(notification.getContent());
 
             switch (notification.getTypeName()) {
-                case "com.feng.accounts.model.TenantApproved": {
+                case "com.feng.accounts.model.event.TenantApproved": {
                     String chineseName = eventReader.stringValue("chineseName").get();
                     log.info("get content info > chineseName :{}", chineseName);
                     break;

@@ -34,7 +34,7 @@ public class SpringCloudStreamMessageSender implements MessageSender {
 
         Message<String> message = MessageBuilder.createMessage(jsonSerializer.serialize(notification), new MessageHeaders(HEADERS));
 
-        Boolean succeeded = Try.of(() -> source.output().send(message, 500L)).get();
+        Boolean succeeded = Try.of(() -> source.output().send(message, 100L)).get();
         if (!succeeded) {
             throw new RuntimeException("Spring Cloud Stream sending message failed");
         }

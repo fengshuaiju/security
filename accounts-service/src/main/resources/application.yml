@@ -1,5 +1,5 @@
 server:
-  port: 20181
+  port: 9000
   context-path: /api/accounts
 spring:
   jpa:
@@ -61,9 +61,6 @@ wechat:
 spring:
   profiles: development
 
-logging:
-  level:
-    org.springframework.security: DEBUG
 
 
 ---

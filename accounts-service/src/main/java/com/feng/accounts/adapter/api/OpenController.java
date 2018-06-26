@@ -5,6 +5,8 @@ import com.feng.accounts.application.command.UserRegisterCommand;
 import com.feng.accounts.application.representation.Code2OpenId;
 import com.feng.accounts.application.service.AccountApplicationService;
 import com.feng.accounts.model.Login;
+import com.feng.accounts.model.event.TenantApproved;
+import com.feng.accounts.support.domain.DomainEventPublisher;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.google.common.collect.ImmutableMap;
 import lombok.extern.slf4j.Slf4j;
@@ -83,7 +85,8 @@ public class OpenController {
 
 
     @GetMapping("/info")
-    public Object info(@RequestParam String code){
+    public Object info(){
+        DomainEventPublisher.publish(TenantApproved.builder().code("CODE").chineseName("CHINESENAME").build());
         return ImmutableMap.of("code", 0, "msg", "ok");
     }
 
