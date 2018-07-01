@@ -40,7 +40,7 @@ public class OpenController {
         this.accountApplicationService = accountApplicationService;
     }
 
-    //使用code请求微信换取用户的openId
+    //使用code请求微信换取用户的openId,并检测该openId的用户是否存在
     @GetMapping("/users/code2openId")
     public Map<String,Object> getOpenIdByCode(@RequestParam String code){
 
@@ -54,8 +54,11 @@ public class OpenController {
         Code2OpenId code2OpenId = JSON.parseObject(response, Code2OpenId.class);
 
         if(StringUtils.isNotBlank(code2OpenId.getOpenid())){
+            //check user is existence?
+            boolean isExistence = accountApplicationService.friendlyName(code2OpenId.getOpenid()) == null ? false : true;
             return ImmutableMap.of(
                     "code", 0,
+                    "existence", isExistence,
                     "openId", code2OpenId.getOpenid()
             );
         }else {
