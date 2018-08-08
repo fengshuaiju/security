@@ -164,6 +164,34 @@
             </plugin>
 
 
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>5.1.4</version>
+                <!-- 在代码生成时候执行Flyway插件 -->
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>migrate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <!-- 指定Flyway迁移脚本文件目录 -->
+                <configuration>
+                    <url>jdbc:mysql://localhost:3306/uaa</url>
+                    <schemas>uaa</schemas>
+                    <user>root</user>
+                    <password>fengshuaiju</password>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
 
             <plugin>
                 <groupId>org.jooq</groupId>
@@ -172,57 +200,11 @@
 
                 <executions>
                     <execution>
-
                         <id>generate-mysql</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
-
-                        <configuration>
-
-                            <jdbc>
-                                <driver>com.mysql.jdbc.Driver</driver>
-                                <url>jdbc:mysql://broker:3306/uaa</url>
-                                <user>root</user>
-                                <password>fengshuaiju</password>
-                            </jdbc>
-
-                            <generator>
-                                <database>
-                                    <name>org.jooq.util.mysql.MySQLDatabase</name>
-                                    <includes>.*</includes>
-                                    <excludes />
-                                    <!--inputSchema即为数据库名-->
-                                    <inputSchema>uaa</inputSchema>
-                                    <forcedTypes>
-                                        <forcedType>
-                                            <name>BOOLEAN</name>
-                                            <types>(?i:TINYINT(\s*\(\d+\))?(\s*UNSIGNED)?)</types>
-                                        </forcedType>
-                                    </forcedTypes>
-                                </database>
-                                <generate>
-                                    <deprecated>false</deprecated>
-                                </generate>
-                                <target>
-                                    <packageName>sprout.jooq.generate</packageName>
-                                    <directory>target/generated-sources</directory>
-                                </target>
-                                <generate>
-                                    <!--
-                                    <pojos>false</pojos>
-                                    <daos>false</daos>
-                                    -->
-                                    <records>true</records>
-                                    <relations>true</relations>
-                                    <deprecated>false</deprecated>
-                                    <immutablePojos>true</immutablePojos>
-                                    <fluentSetters>true</fluentSetters>
-                                </generate>
-                            </generator>
-
-                        </configuration>
                     </execution>
                 </executions>
 
@@ -234,6 +216,27 @@
                     </dependency>
                 </dependencies>
 
+                <configuration>
+                    <jdbc>
+                        <driver>com.mysql.jdbc.Driver</driver>
+                        <url>jdbc:mysql://localhost:3306/uaa</url>
+                        <user>root</user>
+                        <password>fengshuaiju</password>
+                    </jdbc>
+                    <generator>
+                        <database>
+                            <name>org.jooq.util.mysql.MySQLDatabase</name>
+                            <includes>.*</includes>
+                            <excludes/>
+                            <!--inputSchema即为数据库名-->
+                            <inputSchema>uaa</inputSchema>
+                        </database>
+                        <target>
+                            <packageName>sprout.jooq.generate</packageName>
+                            <directory>target/generated-sources</directory>
+                        </target>
+                    </generator>
+                </configuration>
             </plugin>
 
 
