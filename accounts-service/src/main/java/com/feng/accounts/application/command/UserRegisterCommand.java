@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 public class UserRegisterCommand {
 
-    private String username;
+    private String userName;
     private String password;
     private String nickName;
 

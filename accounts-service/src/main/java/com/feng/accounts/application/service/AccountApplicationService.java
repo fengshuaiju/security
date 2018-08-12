@@ -3,6 +3,7 @@ package com.feng.accounts.application.service;
 import com.feng.accounts.application.command.ObtainUserInfoCommand;
 import com.feng.accounts.application.representation.UsersInfoRepresentation;
 import com.feng.accounts.model.*;
+import com.feng.accounts.model.event.UserInfoUpdated;
 import com.feng.accounts.support.domain.DomainEventPublisher;
 import com.feng.accounts.support.utils.Validate;
 import com.feng.accounts.support.utils.ValidationException;
@@ -60,8 +61,8 @@ public class AccountApplicationService {
         if (StringUtils.isNotBlank(nickname)) {
             return nickname;
         } else {
-                return _username;
-            }
+            return _username;
+        }
 
     }
 
@@ -173,9 +174,20 @@ public class AccountApplicationService {
         //obtainUserInfo.put(username, userInfo);
         loginRepository.findByUserName(new Username(username))
                 .ifPresent(login -> {
-                    login.user().editInfo(userInfo.getNickName(),userInfo.getGender(), userInfo.getAvatarUrl(),
-                    userInfo.getCountry(), userInfo.getProvince(), userInfo.getCity());
-//                    DomainEventPublisher.publish();
+                    login.user().editInfo(userInfo.getNickName(), userInfo.getGender(), userInfo.getAvatarUrl(),
+                            userInfo.getCountry(), userInfo.getProvince(), userInfo.getCity());
+                    DomainEventPublisher.publish(
+                            UserInfoUpdated.builder()
+                                    .username(username)
+                                    .country(userInfo.getCountry())
+                                    .gender(userInfo.getGender())
+                                    .province(userInfo.getProvince())
+                                    .city(userInfo.getCity())
+                                    .avatarUrl(userInfo.getAvatarUrl())
+                                    .nickName(userInfo.getNickName())
+                                    .language(userInfo.getLanguage())
+                                    .build()
+                    );
                 });
     }
 }
