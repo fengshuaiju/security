@@ -1,5 +1,7 @@
 package com.feng.accounts.config;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -8,9 +10,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class CurrentUser {
 
     public static String getUserName(){
-        return (String)SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        return (String) authentication.getPrincipal();
     }
 
 }

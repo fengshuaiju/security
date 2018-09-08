@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS login (
 CREATE TABLE IF NOT EXISTS event_to_publish (
   id      BIGINT(11) AUTO_INCREMENT PRIMARY KEY,
   name    VARCHAR(150) NOT NULL,
-  content VARCHAR(150) NOT NULL
+  content TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS event_publishing_tracker (

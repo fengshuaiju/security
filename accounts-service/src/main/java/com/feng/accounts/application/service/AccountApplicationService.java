@@ -155,7 +155,7 @@ public class AccountApplicationService {
                 .leftOuterJoin(USERS).on(LOGIN.USER_ID.eq(USERS.ID))
                 .where(LOGIN.USERNAME.eq(username)).fetchOne();
 
-        UsersInfoRepresentation build = UsersInfoRepresentation.builder()
+        return UsersInfoRepresentation.builder()
                 .username(info.value1())
                 .nickname(info.value2())
                 .sex(Sex.valueOf(info.value3()))
@@ -164,8 +164,6 @@ public class AccountApplicationService {
                 .country(info.value6())
                 .headImageUrl(info.value7())
                 .build();
-
-        return build;
     }
 
     @Transactional
@@ -173,9 +171,9 @@ public class AccountApplicationService {
         //TODO 将用户信息放入map中定时更新
         //obtainUserInfo.put(username, userInfo);
         loginRepository.findByUserName(new Username(username))
-                .ifPresent(login -> {
-                    login.user().editInfo(userInfo.getNickName(), userInfo.getGender(), userInfo.getAvatarUrl(),
-                            userInfo.getCountry(), userInfo.getProvince(), userInfo.getCity());
+                .ifPresent(user -> {
+                    user.editUserInfo(userInfo.getNickName(), userInfo.getGender(), userInfo.getAvatarUrl(),
+                            userInfo.getCountry(), "123", userInfo.getCity());
                     DomainEventPublisher.publish(
                             UserInfoUpdated.builder()
                                     .username(username)

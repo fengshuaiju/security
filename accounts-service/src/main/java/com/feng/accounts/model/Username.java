@@ -14,8 +14,9 @@ public class Username {
     private String username;
 
     public Username(String username) {
-        Validate.notBlank(username, "username can not be blank.");
-        Validate.isTrue(username.matches("^[a-zA-Z][a-zA-Z0-9_-]*$"), "error.register.username.invalid");
+        // TODO
+//        Validate.notBlank(username, "username can not be blank.");
+//        Validate.isTrue(username.matches("^[a-zA-Z][a-zA-Z0-9_-]*$"), "error.register.username.invalid");
         this.username = username;
     }
 
