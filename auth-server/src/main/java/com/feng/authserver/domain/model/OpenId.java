@@ -17,12 +17,14 @@ public class OpenId {
     private static final long serialVersionUID = -2020330093795460858L;
     private String openid;
 
+    private static final String pattern = "^[a-zA-Z\\d_-]{20,}$";
+
     public OpenId(String openid){
-        Validate.matchesPattern(openid, "^[a-zA-Z\\d_]{20,}$", "error.openId.format.invalid");
+        Validate.matchesPattern(openid, pattern, "error.openId.format.invalid");
         this.openid = openid;
     }
 
     public static boolean isValid(String openid) {
-        return Pattern.matches("^[a-zA-Z\\d_]{20,}$", openid);
+        return Pattern.matches(pattern, openid);
     }
 }
