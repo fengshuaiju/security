@@ -31,7 +31,8 @@ public class AccountController {
     @GetMapping("/info")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("#oauth2.hasAnyScope('user', 'platform')")
-    public UsersInfoRepresentation userInfo(@AuthenticationPrincipal(expression = "username") String username){
+    public UsersInfoRepresentation userInfo(){
+        String username = CurrentUser.getUserName();
         log.debug("get userInfo by username : {}", username);
         return accountApplicationService.userInfo(username);
     }
